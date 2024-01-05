@@ -5,6 +5,7 @@ import { setSettingsOpen } from "../App";
 export enum ItemActions {
   Link,
   Setting,
+  Search,
 }
 
 export type SearchItem = {
@@ -18,6 +19,10 @@ export type SearchItem = {
   | {
       action: ItemActions.Setting;
       callback: () => unknown;
+    }
+  | {
+      action: ItemActions.Search;
+      url: string;
     }
 );
 

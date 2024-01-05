@@ -12,7 +12,7 @@ export default function SearchBar(props: {
       <Icon class="icon" width="1.5rem" height="1.5rem" icon="carbon:search" />
       <input
         class="flex w-full border-none focus:border-none focus:outline-none focus:ring-none bg-transparent"
-        onChange={(e) => props.setQuery(e.target.value)}
+        onInput={(e) => props.setQuery(e.target.value)}
         placeholder={props.placeholder}
         autofocus
       />

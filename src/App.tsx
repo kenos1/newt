@@ -2,7 +2,7 @@ import { For, Show, createMemo, createSignal } from "solid-js";
 import Clock from "./components/Clock";
 import SearchBar from "./components/SearchBar";
 import Fuse from "fuse.js";
-import { FUSE_SETTINGS, LIST } from "./lib/search";
+import { FUSE_SETTINGS, ItemActions, LIST } from "./lib/search";
 import Item from "./components/Item";
 import Date from "./components/Calendar";
 import MainSettings from "./components/settings/special/MainSettings";
@@ -21,11 +21,14 @@ export default function App() {
   const config = getStorage();
   const fuse = new Fuse(LIST, FUSE_SETTINGS);
   const [query, setQuery] = createSignal("");
-  const results = createMemo(() => fuse.search(query()));
+  const results = createMemo(() =>
+    fuse.search(query()).slice(0, config.settings.results - 1),
+  );
   return (
     <div
       class="min-w-screen min-h-screen bg-cover bg-fixed bg-center"
       style={{ "background-image": `url("${config.settings.background}")` }}
+      onKeyDown={(e) => {if (e.key=== "enter") window.location.reload;}}
     >
       <div class="min-w-screen min-h-screen bg-black/75 backdrop-blur-sm">
         <Show when={settingsOpen.main}>
@@ -48,14 +51,21 @@ export default function App() {
             query={query}
             setQuery={setQuery}
           />
-          <For each={results()}>
-            {(item) => (
-              <Item
-                class="flex flex-row gap-4 text-left w-full p-2 rounded-md hover:bg-white/20"
-                item={item.item}
-              />
-            )}
-          </For>
+          <Show when={query().length > 0}>
+            <For each={results()}>
+              {(item) => (
+                <Item
+                  class="flex flex-row gap-4 text-left w-full p-2 rounded-md hover:bg-white/20"
+                  item={item.item}
+                />
+              )}
+            </For>
+            <Item class="flex flex-row gap-4 text-left w-full p-2 rounded-md hover:bg-white/20" item={{
+              action: ItemActions.Search,
+              name: `Search ${query()} Online`,
+              url: `${config.settings.searchEngine.replace("%s", query())}`
+            }} />
+          </Show>
         </main>
       </div>
     </div>

@@ -2,6 +2,7 @@ import { JSXElement } from "solid-js";
 
 export default function Input(props: {
   value: string;
+  type?: string;
   setter: (value: string) => void;
   children: JSXElement;
 }) {
@@ -10,7 +11,8 @@ export default function Input(props: {
       <div>{props.children}</div>
       <input
         value={props.value}
-        onChange={(e) => props.setter(e.target.value)}
+        type={props.type ?? "text"}
+        onInput={(e) => props.setter(e.target.value)}
         class="flex w-full p-2 border-white border rounded-md bg-black"
       />
     </div>

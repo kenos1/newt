@@ -14,12 +14,12 @@ export default function KeyValue(props: {
       <div class="grid grid-cols-2 w-full">
         <input
           value={props.key}
-          onChange={(e) => props.keySetter(e.target.value)}
+          onInput={(e) => props.keySetter(e.target.value)}
           class="rounded-l-md border-x border-l border-white bg-black p-2"
         />
         <input
           value={props.value}
-          onChange={(e) => props.valueSetter(e.target.value)}
+          onInput={(e) => props.valueSetter(e.target.value)}
           class="rounded-r-md border-x border-r border-white bg-black p-2"
         />
       </div>
